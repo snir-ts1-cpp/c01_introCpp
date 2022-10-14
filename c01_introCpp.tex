@@ -1,0 +1,991 @@
+\documentclass[10pt]{article}
+\usepackage{../_macrosLatex/macros}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{fancyhdr} % Gestion header/footer
+
+%----------------------------------------------------
+% Paramétrage de la fiche
+%----------------------------------------------------
+\matiere{BTS SNIR TS1}
+\sequence{Programmation en langage C++}
+\seqlogo{\faCode}
+\titrefiche{C01 - Introduction}
+\version{v1.0}
+\dateversion{28.09.22}
+\type{cours}
+
+%----------------------------------------------------
+% Définition des pieds et têtes de page
+%----------------------------------------------------
+% Pour toutes les pages
+\pagestyle{fancy}
+\fancyhead[L]{\seqlogo\ \sequenceVal}
+\fancyhead[R]{\titreficheVal}
+\fancyfoot[L]{\matiereVal - Lycée Louis Rascol, Albi}
+\fancyfoot[R]{\ccbyncsaeu}
+\fancyfoot[C]{\thepage\ / \pageref{LastPage}}
+% Pour la première page
+\fancypagestyle{firstpage}{%
+  \lhead{}
+  \rhead{}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+%----------------------------------------------------
+% Début du document
+%----------------------------------------------------
+\begin{document}
+\cartouche
+\thispagestyle{firstpage}
+
+\introduction{assets/bjarneStroustrup.jpg}{Bjarne Stroustrup en 2010}{
+    C++ est un langage de programmation compilé, permettant la programmation sous de multiples paradigmes, dont trois que nous aborderons
+    cette année : la programmation procédurale, la programmation fonctionnelle et la programmation objets. Ses bonnes performances, et sa
+    compatibilité avec le C en font un des langages de programmation les plus utilisés dans les applications où la performance est critique.
+    
+    \smallskip
+    Créé par Bjarne Stroustrup dans les années 80 alors qu'il travaille dans les laboratoires Bell, la première version du langage date de 1998 : ISO/CEI 14882:1998, aujourd'hui la dernière version est C++20 qui date de décembre 2020.\footnote{Des parties de cette introduction sont tirées de la page Wikipédia du langage \href{https://fr.wikipedia.org/wiki/C\%2B\%2B}{C++} ainsi que de celle de \href{https://fr.wikipedia.org/wiki/Bjarne_Stroustrup}{Bjarne Stroustrup}} 
+    }
+
+\licence
+
+\tableofcontents
+\clearpage
+
+%----------------------------------------------------
+% Section 1
+%----------------------------------------------------
+\section{Variables, littérales, constantes}
+
+Dans ce chapitre, nous allons apprendre comment se servir des variables, littérales et constantes en langage C++, tout cela à l'aide d'exemples.
+
+\subsection{Variables}
+En programmation, une variable est un conteneur (espace de stockage) qui permet de conserver des données.\\
+Pour indiquer l'espace de stockage, chaque variable doit avoir un nom unique (identifiant), par exemple : 
+
+\begin{cppcode}
+    int age(18);
+\end{cppcode}
+\captionof{listing}{Déclaration et affectation de variable}
+
+\bigskip
+Ici, \mintinline{cpp}`age` est une variable de type entier (\mintinline{cpp}`int` en C++), nous lui avons affecté la valeur \mintinline{cpp}`14` lors de la déclaration.
+
+\begin{noteblock}
+    Le type \mintinline{cpp}`int` suggère que la variable ne peut contenir que des nombres entiers. De la même manière on peut utiliser le type \mintinline{cpp}`double` ou \mintinline{cpp}`float`  si on veut stocker des nombres décimaux.
+\end{noteblock}
+
+Nous apprendrons tous les types de variables existants en C++ dans le prochain chapitre.
+
+\bigskip
+La valeur d'une variable peut être changée, comme l'indique le nom "variable" :
+
+\begin{cppcode}
+    int age(18); // Déclaration de la variable age et affectation à 18.
+    age = 15; // Changement du contenu de la variable age pour 15
+\end{cppcode}
+\captionof{listing}{Déclaration et réaffectation d'une variable}
+
+\important{Règles pour nommer une variable}{
+    \begin{itemize}
+        \item Une variable ne peut contenir que des lettres, des chiffres et le symbole \mintinline{cpp}`_` 
+        \item Une variable ne peut pas commencer par un nombre
+        \item Par convention une variable commence par une minuscule, les classes commençant par une majuscule.
+        \item Le nom d'une variable ne peut pas être un mot clé du langage, par exemple \mintinline{cpp}`int` est un mot clé du C++
+        \item Donnez un nom utile aux variables ! Évitez \mintinline{cpp}`a`, \mintinline{cpp}`b`, \mintinline{cpp}`toto`,\mintinline{cpp}`tutu`, etc   
+    \end{itemize}
+}
+
+
+
+\subsection{Littérales}
+Les littérales sont des données utilisées pour représenter des valeurs fixes. Elles peuvent être utilisées directement dans le code. Par exemple : \mintinline{cpp}`1`, \mintinline{cpp}`2.5`, \mintinline{cpp}`c`, etc.\\
+Ici \mintinline{cpp}`1`, \mintinline{cpp}`2.5`, \mintinline{cpp}`c` sont des littérales, par ce que vous ne pouvez pas assigner des valeurs différentes à ces termes.\\
+Vous trouverez ci-dessous une liste des différentes littérales utilisables en programmation C++.
+
+\subsubsection{Entiers}
+Un entier est une valeur numérique (un nombre) composé d'aucune partie fractionnaire ou à exposant, il y a 4 types de littérales entières en C++ :
+
+\begin{itemize}
+    \item Binaire (base 2), ex : \mintinline{cpp}`0b101`, \mintinline{cpp}`0b1111`
+    \item Octal (base 8), ex : \mintinline{cpp}`033`, \mintinline{cpp}`071`
+    \item Décimal (base 10), ex : \mintinline{cpp}`3`, \mintinline{cpp}`42` 
+    \item Hexadécimal (base 16), ex : \mintinline{cpp}`0xFF`, \mintinline{cpp}`OxCAFE81`  
+\end{itemize}
+
+\subsubsection{Nombres flottants}
+Un nombre flottant est une littérale qui a une forme fractionnaire ou un nombre décimal noté sous forme scientifique, par exemple :
+\mintinline{cpp}`-2.0`, \mintinline{cpp}`0.000034`, ou encore \mintinline{cpp}`-0.22E-5`.
+
+\begin{noteblock}
+    \begin{itemize}
+        \item Flottant signifie nombre encodé en virgule flottante, qui est le type d'encodage utilisé par l'ordinateur pour mémoriser les réels. La norme IEEE-754 régit ce type d'encodage.
+        \item En C++ \mintinline{cpp}`E-5`  veut dire  $10^{-5}$
+    \end{itemize}
+\end{noteblock}
+
+\subsubsection{Caractères}
+Une littérale caractère est créée en encadrant un caractère par deux guillemets simples, par exemple : \mintinline{cpp}`'a'`, \mintinline{cpp}`'x'`, \mintinline{cpp}`'2'`. 
+
+\subsubsection{Caractères d'échappement}
+Parfois il est nécessaire d'utiliser des caractères qui ne peuvent pas être tapés, ou bien, qui ont une signification spéciale dans le langage. Par exemple : Nouvelle ligne \keys{\return}, point d'interrogation \keys{?}, tabulation \keys{\tab}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|}
+    \hline
+    \textbf{Caractère C++}              & \multicolumn{1}{c|}{\textbf{Nom}} \\ \hline
+    \mintinline{cpp}`\b`                & Backspace                \\ \hline
+    \mintinline{cpp}`\f`                & Form feed (Saut de page) \\ \hline
+    \mintinline{cpp}`\n`                & Newline                  \\ \hline
+    \mintinline{cpp}`\r`                & Return (Retour à la ligne)\\ \hline
+    \mintinline{cpp}`\t`                & Horizontal tab           \\ \hline
+    \mintinline{cpp}`\v`                & Vertical tab             \\ \hline
+    \mintinline{cpp}`\\`                & Backslash                \\ \hline
+    \mintinline{cpp}`\'`                & Single quotation mark    \\ \hline
+    \mintinline{cpp}`\"`                & Double quotation mark    \\ \hline
+    \mintinline{cpp}`\?`                & Question mark            \\ \hline
+    \mintinline{cpp}`\0`                & Null Character           \\ \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Chaine de caractères}
+Une chaine de caractère est une suite de caractères encadrée par des guillemets doubles, par exemple : 
+
+\begin{itemize}
+    \item \mintinline{cpp}`"BTS"` Chaine de caractère avec 3 caractères
+    \item \mintinline{cpp}`" "` Chaine de caractère avec un seul espace.
+    \item \mintinline{cpp}`"x"` Chaine de caractère avec un seul caractère.
+    \item \mintinline{cpp}`"La terre est ronde\n"` Phrase avec la caractère "Return" à la fin.
+\end{itemize}
+
+
+
+\subsection{Constantes}
+En C++ nous pouvons créer des variables dont les valeurs ne peuvent pas changer. Pour cela il faut utiliser le mot clé \mintinline{cpp}`const`, par exemple :
+
+\begin{cppcode}
+    const float NOMBRE_OR = 1.618033;
+    NOMBRE_OR = 2500 // Erreur! NOMBRE_OR est une constante, la réaffectation est impossible
+\end{cppcode}
+\captionof{listing}{Déclaration d'une constante avec \mintinline{cpp}`const`}
+
+\bigskip
+Ici nous avons déclaré une constante \mintinline{cpp}`NOMBRE_OR` et nous lui avons affecté une valeur de \mintinline{cpp}`1.618033`, si plus tard nous essayons de changer la valeur de cette constante, le compilateur nous affichera une erreur.
+
+\smallskip
+Une autre méthode est d'utiliser le mot clé \mintinline{cpp}`#define` \textbf{en début de code}, par exemple :
+
+\begin{cppcode}
+    #define NOMBRE_OR = 1.1618033
+\end{cppcode}
+\captionof{listing}{Déclaration d'une constante avec \mintinline{cpp}`define` }
+
+\begin{noteblock}
+    Par convention les constantes sont nommées en majuscule.
+\end{noteblock}
+
+
+
+
+%----------------------------------------------------
+% Section 2
+%----------------------------------------------------
+\section{Les types de variables}
+Dans cette partie nous allons apprendre les types de variables basiques du C++, comme le \mintinline{cpp}`int`, le \mintinline{cpp}`float`, le \mintinline{cpp}`char`, etc.
+
+\subsection{Types de variables fondamentaux}
+Le tableau ci-dessous montre les types de variables fondamentaux, leur signification ainsi que leur taille :
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|c|}
+    \hline
+    \textbf{Type} & \multicolumn{1}{c|}{\textbf{Signification}} & \textbf{Taille (en bit)} \\ \hline
+    \mintinline{cpp}`int`           & Entier                                      & 16 ou 32                    \\ \hline
+    \mintinline{cpp}`float`         & Virgule flottante                           & 32                          \\ \hline
+    \mintinline{cpp}`double`        & Double Virgule flottante                    & 64                          \\ \hline
+    \mintinline{cpp}`char`          & Caractère                                   & 8                          \\ \hline
+    \mintinline{cpp}`bool`          & Booleen                                     & 1                          \\ \hline
+    \mintinline{cpp}`void`          & Vide                                        & 0                          \\ \hline
+    \end{tabular}
+\end{table}
+
+À présent, nous allons voir leur utilisation ci-dessous, plus en détails.
+
+\subsubsection{Le type \mintinline{cpp}`int`}
+\begin{itemize}
+    \item Le type \mintinline{cpp}`int` est utilisé pour stocker un nombre entier.
+    \item Pour un système 16 bits, comme la plupart des cartes Arduino, la taille d'un entier est de 2 octets, nous pouvons alors saisir des valeurs de -32768 à 32767.
+    \item Pour un système 32 bits ou 64 bits, comme la plupart des ordinateurs modernes, la taille d'un entier est de 4 octets, nous pouvons alors saisir des valeurs de -2147483648 à 2147483647.
+\end{itemize}
+
+Exemple de déclaration d'un entier en C++ :
+
+\begin{cppcode}
+    int nombreTours(10);
+\end{cppcode}
+\captionof{listing}{Déclaration et affectation d'un entier}
+
+
+\subsubsection{Les types \mintinline{cpp}`float` et \mintinline{cpp}`double`}
+\begin{itemize}
+    \item Les types \mintinline{cpp}`float` et \mintinline{cpp}`double` sont utilisés pour stocker des nombres à virgules flottantes soit des décimaux ou des nombres à exposant.
+    \item La taille d'un flottant est de 4 octets et la taille d'un double est de 8, un double à donc 2 fois la précision d'un flottant.
+\end{itemize}
+
+Exemples de déclaration et d'affectation :
+
+\begin{cppcode}
+    float vitesse(127.3);
+    double volume(42.424242);
+    double distance(12E10); // 12E10 est équivalent à 12x10^10
+\end{cppcode}
+\captionof{listing}{Déclaration et affectation de flottants et de doubles}
+
+
+\subsubsection{Le type \mintinline{cpp}`char`}
+\begin{itemize}
+    \item Le mot clé \mintinline{cpp}`char` est utilisé pour stocker des caractères.
+    \item Sa taille est de 1 octet.
+    \item En C++ les caractères doivent être enregistrés dans des guillemets simples : \mintinline{cpp}`' '`.
+\end{itemize}
+
+Exemples de déclaration et d'affectation :
+
+\begin{cppcode}
+    char unCaractere('i');
+\end{cppcode}
+\captionof{listing}{Déclaration et affectation d'un caractère}
+
+\subsubsection{Le type \mintinline{cpp}`bool`}
+\begin{itemize}
+    \item Un booléen ne peut prendre que 2 valeurs : \mintinline{cpp}`true` ou \mintinline{cpp}`false`
+    \item Les booléens sont souvent utilisés dans des boucles et des alternatives.
+\end{itemize} 
+
+Exemple de déclaration et d'affectation :
+
+\begin{cppcode}
+    bool flag(false);
+\end{cppcode}
+\captionof{listing}{Déclaration et affectation d'un booléen}
+
+\subsubsection{Le type \mintinline{cpp}`void`}
+\begin{itemize}
+    \item Le type \mintinline{cpp}`void` indique une absence de donnée, il signifie "rien" ou "pas de valeur".
+    \item Nous utiliserons ce type quand nous aborderons les fonctions et les pointeurs.
+\end{itemize}
+
+\begin{noteblock}
+    Nous ne pouvons pas déclarer de variable de type \mintinline{cpp}`void`.
+\end{noteblock}
+
+\subsection{Modificateurs de types}
+On peut modifier les caractéristiques des types de variables abordés plus haut en utilisant des modificateurs de types ou \textit{types modifiers} en anglais.
+
+\smallskip
+Il y a 4 modificateurs de types en C++ :
+\begin{itemize}
+    \item \mintinline{cpp}`signed` 
+    \item \mintinline{cpp}`unsigned` 
+    \item \mintinline{cpp}`short` 
+    \item \mintinline{cpp}`long` 
+\end{itemize}
+
+Nous pouvons modifier à l'aide de ces modificateurs, les 3 types suivants :
+\begin{itemize}
+    \item \mintinline{cpp}`int` 
+    \item \mintinline{cpp}`double` 
+    \item \mintinline{cpp}`char` 
+\end{itemize}
+
+Le tableau ci-dessous donne des exemples de modificateurs appliqués sur les trois types de variables cités : \mintinline{cpp}`int`, \mintinline{cpp}`double` et \mintinline{cpp}`char`.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|l|c|l|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Type}} & \textbf{Taille en octet} & \multicolumn{1}{c|}{\textbf{Signification}}                                        \\ \hline
+    \mintinline{cpp}`signed int`                            & 4              & Entiers, équivalent à int\\ \hline
+    \mintinline{cpp}`unsigned int`                          & 4              & Peut seulement stocker des entiers positifs\\ \hline
+    \mintinline{cpp}`short`                                 & 2              & Petits entiers (plage -32768 à 32767)\\ \hline
+    \mintinline{cpp}`unsigned short`                        & 2              & Petits entiers positifs (plage 0 à 65535)\\ \hline
+    \mintinline{cpp}`long`                                  & au moins 4     & Grands entiers (équivalent à long int)\\ \hline
+    \mintinline{cpp}`unsigned long`                         & 4              & Larges entiers positifs (équivalent à unsigned long int)\\ \hline
+    \mintinline{cpp}`long long`                             & 8              & Très larges entiers (équivalent à long long int)\\ \hline
+    \mintinline{cpp}`unsigned long long`                    & 8              & Très larges entiers positifs (équivalent à unsigned long long int)\\ \hline
+    \mintinline{cpp}`long double`                           & 12             & Larges nombres à virgule flottante\\ \hline
+    \mintinline{cpp}`signed char`                           & 1              & Caractères (plage -127 à 127) \\ \hline
+    \mintinline{cpp}`unsigned char`                         & 1              & Caractères (plage 0 à 255)\\ \hline
+    \end{tabular}
+\end{table}
+
+Nous donnons ci-dessous quelques exemples de déclaration à l'aide de types avec modificateurs :
+
+\begin{cppcode}
+    long b = 4523232;
+    long int c = 2345342;
+    long double d = 233434.56343;
+    short d = 3434233; // Error! out of range
+    unsigned int a = -5;    // Error! can only store positive numbers or 0
+\end{cppcode}
+\captionof{listing}{Déclarations avec types et modificateurs}
+
+
+
+
+%----------------------------------------------------
+% Section 3
+%----------------------------------------------------
+\section{Les flux d'entrée/sortie}
+Dans cette partie nous allons apprendre à utiliser l'objet \mintinline{cpp}`cin` pour lire quelque chose saisi par l'utilisateur, et l'objet cout pour afficher sur la console.
+
+\subsection{Flux de sortie \mintinline{cpp}`cout`}
+En C++, \mintinline{cpp}`cout` envoi une chaine de caractère sur la console, nous utilisons l'objet \mintinline{cpp}`cout` avec l'opérateur \mintinline{cpp}`<<`
+
+\begin{noteblock}
+    En C++ l'opérateur \mintinline{cpp}`<<` est appelé opérateur d'insertion et \mintinline{cpp}`>>` opérateur d'extraction. Le créateur du C++ Bjarne Stroustrup à l'habitude d'appeler \mintinline{cpp}`<<` \textit{put to} et \mintinline{cpp}`>>` \textit{get from}.  
+\end{noteblock}
+
+\subsubsection{Exemple 1 : Affichage d'une chaine de caractère}
+\begin{cppcode}
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+        // Affiche la chaine de caractère qui est entre les guillemets doubles
+        cout << "Hello World!";
+        return 0;
+    }
+\end{cppcode}
+\captionof{listing}{Exemple 1 : Affichage d'une chaine de caractère}
+
+\bigskip
+Nous obtenons alors la sortie suivante sur la console :
+
+\begin{textcode}
+    Hello World!
+\end{textcode}
+
+Comment ce programme fonctionne ?
+\begin{itemize}
+    \item Dans un premier temps nous ajoutons la bibliothèque \mintinline{cpp}`iostream` qui nous permet d'utiliser les flux d'entrée/sortie.
+    \item L'objet \mintinline{cpp}`cout` est défini dans l'espace de nom \mintinline{cpp}`std`, nous utilisons donc l'instruction \mintinline{cpp}`using namespace std;`
+    \item Chaque programme C++ démarre avec une fonction \mintinline{cpp}`main`. L'exécution du code commence au début de la fonction \mintinline{cpp}`main()`.
+    \item \mintinline{cpp}`cout` est un objet qui imprime sur la console la chaine de caractère entre les guillemets doubles : \mintinline{cpp}`" "`. \mintinline{cpp}`cout` est toujours suivi de l'opérateur \mintinline{cpp}`<<`.
+    \item \mintinline{cpp}`return 0;`  est le \textit{exit status} de la fonction \mintinline{cpp}`main()`. Le programme fini sur cette instruction, toutefois cette instruction n'est pas obligatoire.
+\end{itemize}
+
+\begin{noteblock}
+    Si nous n'incluons pas l'instruction \mintinline{cpp}`using namespace std;` nous devrons alors utiliser \mintinline{cpp}`std::cout` à la place de \mintinline{cpp}`cout` tout court, comme dans l'exemple ci-dessous :
+
+\begin{cppcode}
+    #include <iostream>
+
+    int main() {
+    // prints the string enclosed in double quotes
+    std::cout << "This is C++ Programming";
+    return 0;
+    }
+\end{cppcode}
+    \captionof{listing}{Exemple d'utilisation de \mintinline{cpp}`cout` sans \mintinline{cpp}`namespace std`  }
+\end{noteblock}
+
+
+\subsubsection{Exemple 2 : Affichage du contenu de variables}
+Pour afficher sur la console des nombres et des caractères contenus dans des variables, nous utilisons le même objet \mintinline{cpp}`cout` mais sans les \mintinline{cpp}`" "` :
+
+\begin{cppcode}
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+        int num1 = 70;
+        double num2 = 256.783;
+        char car = 'A';
+
+        cout << num1 << endl;    // Affiche un entier
+        cout << num2 << endl;    // Affiche un double
+        cout << "caractère : " << car << endl;    // Affiche un caractère
+        return 0;
+    }
+\end{cppcode}
+\captionof{listing}{Exemple 2 : Affichage du contenu de variables}
+
+\bigskip
+Nous obtenons alors la sortie suivante sur la console :
+\begin{textcode}
+    70
+    256.783
+    caractère: A
+\end{textcode}
+
+\begin{noteblock}
+    \begin{itemize}
+        \item Le manipulateur \mintinline{cpp}`endl` est utilisé pour aller à la ligne en fin d'affichage.
+        \item L'opérateur \mintinline{cpp}`<<` peut être utilisé plus d'une fois si nous voulons imprimer sur la console le contenu de plusieurs variables, chaines de caractères, en une seule instruction, comme nous l'avons fait à la ligne 11.
+    \end{itemize}
+\end{noteblock}
+
+
+\subsection{Flux d'entrée \mintinline{cpp}`cin`}
+En C++ \mintinline{cpp}`cin` capture les données saisies au clavier. Nous utilisons l'objet \mintinline{cpp}`cin` avec l'opérateur \mintinline{cpp}`>>`.
+
+
+\subsubsection{Exemple 3 : Capture d'un entier}
+\begin{cppcode}
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+        int num;
+        cout << "Entrez un entier: ";
+        cin >> num;   // Capture de l'entier saisi au clavier
+        cout << "Le nombre est: " << num;
+        return 0;
+    }
+\end{cppcode}
+\captionof{listing}{Exemple 3 : Capture d'un entier}
+
+\bigskip
+Nous obtenons alors la sortie suivante sur la console :
+
+\begin{textcode}
+    Entrez un entier: 42
+    Le nombre est: 42
+\end{textcode}
+
+Dans ce programme nous avons utilisé \mintinline{cpp}`cin >> num;` afin de capturer l'entier saisi par l'utilisateur et le stocker dans la variable \mintinline{cpp}`num`.
+
+\begin{noteblock}
+    Comme pour l'opérateur \mintinline{cpp}`cout`, si nous ne mettons pas l'instruction \mintinline{cpp}`using namespace std;` nous devrons utiliser \mintinline{cpp}`std::cin` à chaque fois et non \mintinline{cpp}`cin` tout court !  
+\end{noteblock}
+
+\subsubsection{Exemple 4 : Capture d'entrées multiples}
+\begin{cppcode}
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+        char a;
+        int num;
+
+        cout << "Entrez un caractère et un entier: ";
+        cin >> a >> num;
+
+        cout << "Caractère: " << a << endl;
+        cout << "Entier: " << num;
+
+        return 0;
+    }
+\end{cppcode}
+\captionof{listing}{Exemple 4 : Capture d'entrées multiples}
+
+\bigskip
+Nous obtenons alors la sortie suivante sur la console :
+
+\begin{textcode}
+    Entrez un caractère et un entier: 42 a
+    Caractère: a
+    Entier: 42
+\end{textcode}
+
+Dans cet exemple l'utilisateur a saisi un nombre \mintinline{cpp}`42` et un caractère \mintinline{cpp}`a` en les séparant par un espace et en appuyant à la fin de la saisie sur entrée. Pour faire cela nous avons utilisé deux fois l'opérateur \mintinline{cpp}`>>`. 
+
+
+
+
+%----------------------------------------------------
+% Section 4
+%----------------------------------------------------
+\section{Conversions de types}
+
+Dans ce chapitre, nous allons voir comment une donnée d'un type, en un autre. En langage C++ il y a deux types de conversions, l'implicite et l'explicite.
+
+\subsection{Conversion implicite}
+Ce type de conversion fait automatiquement par le compilateur est appelé conversion implicite ou automatique. Nous montrons ci-dessous
+2 exemples de ce type.
+
+\subsubsection{Exemple 1 : Conversion d'un \mintinline{cpp}`int` vers un \mintinline{cpp}`double`}
+\begin{cppcode}
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+        // Affectation d'un nombre entier à un int
+        int num_int(9);
+
+        // Déclaration d'un double
+        double num_double;
+
+        // Conversion implicite
+        // Affectation de la valeur entière à une variable de type double
+        num_double = num_int;
+
+        cout << "num_int = " << num_int << endl;
+        cout << "num_double = " << num_double << endl;
+
+        return 0;
+    }
+\end{cppcode}
+\captionof{listing}{Exemple 1 : Conversion d'un \mintinline{cpp}`int` vers un \mintinline{cpp}`double`}
+
+\bigskip
+Sortie console :
+
+\begin{textcode}
+    num_int = 9
+    num_double = 9
+\end{textcode}
+
+Dans ce programme nous avons assigné une valeur entière à une variable de type \mintinline{cpp}`double` :
+\mintinline{cpp}`num_double = num_int;`.\\
+Dans ce cas, la valeur entière est \textbf{automatiquement convertie en double}, par le compilateur \textbf{avant d'être affectée 
+à la variable} \mintinline{cpp}`num_double`.
+
+
+\subsubsection{Exemple 2: Conversion automatique d'un double vers un int}
+\begin{cppcode}
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+
+    int num_int;
+    double num_double(9.99);
+
+    // Conversion implicite
+    // Affectation d'une valeur de type double à une variable de type int
+    num_int = num_double;
+
+    cout << "num_double = " << num_double << endl;
+    cout << "num_int = " << num_int << endl;
+
+    return 0;
+    }
+\end{cppcode}
+\captionof{listing}{Exemple 2: Conversion automatique d'un double vers un int}
+
+\bigskip
+Sortie console :
+
+\begin{textcode}
+    num_double = 9.99
+    num_int = 9
+\end{textcode}
+
+Dans ce programme nous avons assigné une valeur double à une variable de type \mintinline{cpp}`int` :
+\mintinline{cpp}`num_int = num_double;`.\\
+Dans ce cas, la valeur double est \textbf{automatiquement convertie en int}, par le compilateur 
+\textbf{avant d'être affectée à la variable} \mintinline{cpp}`num_int`. 
+
+\begin{noteblock}
+    Comme les variables de type \mintinline{cpp}`int` ne peuvent pas avoir de partie décimale, \textbf{les chiffres
+    correspondants à celle-ci ont été tronqués} dans l'exemple précédent.
+\end{noteblock}
+
+
+
+\subsection{Conversion explicite}
+Quand les données sont changées manuellement d'un type vers un autre, cela est appelé une conversion implicite. Ce type de conversion peut aussi être appelé \textit{type casting}. Nous donnons un exemple de \textit{type casting} ci-dessous :
+
+\begin{cppcode}
+    #include <iostream>
+
+    using namespace std;
+
+    int main() {
+        // Initialisation d'un double
+        double num_double(3.56);
+        cout << "num_double = " << num_double << endl;
+
+        // Conversion d'un double vers un entier
+        int num_int = int(num_double);
+        cout << "num_int   = " << num_int << endl;
+
+        return 0;
+    }
+\end{cppcode}
+\captionof{listing}{Exemple 3 : Conversion explicite d'un double vers un int}
+
+\bigskip
+Nous obtenons la sortie console suivante :
+
+\begin{textcode}
+    num_double = 3.56
+    num_int   = 3
+\end{textcode}
+
+
+
+%----------------------------------------------------
+% Section 5
+%----------------------------------------------------
+\section{Les opérateurs}
+
+\subsection{Opérateurs arithmétiques}
+
+Les opérateurs arithmétiques sont utilisés pour faire des opérations mathématiques sur des variables et des données, par exemple :
+\begin{textcode}
+    rslt = a+b;
+\end{textcode}
+
+Ici l'opérateur \mintinline{cpp}`+` est utilisé pour additionner le contenu des 2 variables \mintinline{cpp}`a` et \mintinline{cpp}`b`, nous stockons le résultat de l'opération dans la variable \mintinline{cpp}`rslt`.\\ De manière similaire voici tous les opérateurs arithmétiques utilisables en C++ :
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|}
+    \hline
+    \textbf{Opérateur} & \multicolumn{1}{c|}{\textbf{Opération}} \\ \hline
+    +                 & Addition                                \\ \hline
+    -                 & Soustraction                            \\ \hline
+    *                 & Multiplication                          \\ \hline
+    /                 & Division                                \\ \hline
+    \%                & Modulo (Reste de la division)           \\ \hline
+    \end{tabular}
+\end{table}
+
+
+\subsubsection{Exemple 1 : Opérateurs arithmétiques}
+
+\begin{cppcode}
+   #include <iostream>
+    using namespace std;
+
+    int main() {
+        int a, b;
+        a = 7;
+        b = 2;
+
+        // Affiche la somme de a et b
+        cout << "a + b = " << (a + b) << endl;
+
+        // Affiche la différence de a et b
+        cout << "a - b = " << (a - b) << endl;
+
+        // Affiche le produit de a et b
+        cout << "a * b = " << (a * b) << endl;
+
+        // Affiche la division de a et b
+        cout << "a / b = " << (a / b) << endl;
+
+        // Affiche le reste de la division de a et b
+        cout << "a % b = " << (a % b) << endl;
+
+        return 0;
+    } 
+\end{cppcode}
+\captionof{listing}{Exemple 1 : Opérateurs arithmétiques}
+\label{exemple1OpsArithm}
+
+\bigskip
+Nous obtenons la sortie console suivante :
+
+\begin{textcode}
+    a + b = 9
+    a - b = 5
+    a * b = 14
+    a / b = 3
+    a % b = 1
+\end{textcode}
+
+
+\subsubsection{À propos de l'opérateur \mintinline{cpp}`/` }
+Dans le code source \ref{exemple1OpsArithm} ci-dessus, nous avons utlisé l'opérateur \mintinline{cpp}`/` pour diviser 2 entiers \mintinline{cpp}`a` et \mintinline{cpp}`b`, vous remarquerez sur la sortie console que le résultat de la division est un entier et correspond au quotient.
+
+\smallskip
+En effet, C++ produit un entier si les 2 nombres à calculer sont des entiers, pour avoir un réel il faut q'une des 2 opérandes soit un \mintinline{cpp}`float` ou un \mintinline{cpp}`double`.
+
+\begin{cppcode}
+    // Division de 2 entiers
+    cout << 7/2 << endl; 
+    // Division d'un réel et d'un entier
+    cout << 7.0 / 2 << endl;
+    // Division d'un entier et d'un réel
+    cout << 7 / 2.0 << endl;
+    // Division de 2 réels
+    cout << 7.0 / 2.0 << endl;
+\end{cppcode}
+\caption{Exemples d'utilisation de l'opérateur / }
+
+\bigskip
+Sortie console :
+\begin{textcode}
+    3
+    3.5
+    3.5
+    3.5
+\end{textcode}
+
+
+\subsubsection{À propos de l'opérateur modulo \%}
+Dans le code source \ref{exemple1OpsArithm} nous avons utilisé l'opérateur modulo \mintinline{cpp}`%` qui produit le reste de la division, dans cet exemple :
+$$7\div2 \quad\rightarrow\quad quotient=3 \qquad reste =1$$
+Le résultat du modulo pour \mintinline{cpp}`7%2` vaut \mintinline{cpp}`1`.
+
+\bigskip
+\faCaretRight\ \textbf{Recherche de parité}\\
+L'opérateur modulo est aussi très souvent utilisé en programmation pour vérifier la parité d'un nombre :
+\begin{cppcode}
+    int nb1(2), nb2(5);
+    cout << "Le modulo vaut" << nb1%2 << "donc nb1 est pair"
+    cout << "Le modulo vaut" << nb2%2 << "donc nb2 est impair"
+\end{cppcode}
+\caption{Utilisation du modulo pour recherche de la parité}
+
+\bigskip
+Sortie console :
+\begin{textcode}
+    Le modulo vaut 0 donc nb1 est pair
+    Le modulo vaut 1 donc nb2 est impair
+\end{textcode}
+
+Nous en déduisons que le modulo par 2 d'un \textbf{nombre pair vaut 0} et celui d'un \textbf{nombre impair vaut 1}.
+
+\bigskip
+\faCaretRight\ \textbf{Recherche de multiple}\\
+De la même manière le modulo est utilisé pour savoir si un nombre est multiple d'un autre :
+\begin{cppcode}
+    int nb1(15) nb2(7);
+    cout << "Le modulo de "<< nb1 <<" par 3 vaut : " << nb1%3 << " donc "<< nb1 <<" est un multiple de 3"
+    cout << "Le modulo de "<< nb2 <<" par 3 vaut : " << nb2%3 << " donc "<< nb2 <<" n'est pas un multiple de 3"
+\end{cppcode}
+\caption{Utilisation du modulo pour recherche de multiple}
+
+\bigskip
+Sortie console :
+\begin{textcode}
+    Le modulo de 15 par 3 vaut 0 donc 15 est un multiple de 3
+    Le modulo de 7 par 3 vaut 1 donc 7 n'est pas un multiple de 3
+\end{textcode}
+
+Pour tester si un nombre est multiple d'un autre il suffit de faire le modulo du premier par le second. Si le résultat est 0, le premier est
+multiple du second.
+
+
+\subsection{Opérateurs d'incrément et de décrément}
+C++ propose des opérateurs d'incrément \mintinline{cpp}`++` et de décrément \mintinline{cpp}`--` :
+\begin{itemize}
+    \item L'opérateur \mintinline{cpp}`++` incrémente la valeur de l'opérande par 1
+    \item L'opérateur \mintinline{cpp}`--` décrémente par 1
+\end{itemize}
+
+\begin{cppcode}
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+        int a = 10, b = 100, rslt_a, rslt_b;
+
+        // Incrément par 1 de a et affectation à rslt_a
+        rslt_a = ++a;
+        cout << "rslt_a = " << rslt_a << endl;
+
+
+        // Décrément par 1 de b et affectation à rslt_b
+        rslt_b = --b;
+        cout << "rslt_b = " << rslt_b << endl;
+
+        return 0;
+    }
+\end{cppcode}
+\caption{Exemple 2 : Opérateurs d'incrément et de décrément}
+
+\bigskip
+Sortie console :
+
+\begin{textcode}
+    rslt_a = 11
+    rslt_b = 99
+\end{textcode}
+
+\subsection{Opérateurs relationnels}
+Un opérateur relationnel est utilisé pour vérifier les relations entre 2 opérandes par exemple : \mintinline{cpp}`a > b` va vérifier que le 
+contenu de \mintinline{cpp}`a` est supérieur à celui de \mintinline{cpp}`b`, si c'est le cas la relation est vraie et renvoie
+un \mintinline{cpp}`1`, si ce n'est pas le cas la relation est fausse et renvoie un \mintinline{cpp}`0` .
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|l|}
+    \hline
+    \textbf{Opérateur}    & \multicolumn{1}{c|}{\textbf{Signification}} & \multicolumn{1}{c|}{\textbf{Exemple}} \\ \hline
+    \mintinline{cpp}`==`  & Est égal à                                  & \mintinline{cpp}`3 == 5` renvoie \mintinline{cpp}`false` \\ \hline
+    \mintinline{cpp}`!=`  & N'est pas égal à                            & \mintinline{cpp}`3 != 5`  renvoie \mintinline{cpp}`true` \\ \hline
+    \mintinline{cpp}`>`   & Est supérieur à                             & \mintinline{cpp}`3 > 5`  renvoie \mintinline{cpp}`false` \\ \hline
+    \mintinline{cpp}`<`   & Est inférieur à                             & \mintinline{cpp}`3 < 5`  renvoie \mintinline{cpp}`true`  \\ \hline
+    \mintinline{cpp}`>=`  & Est supérieur ou égal à                     & \mintinline{cpp}`3 >= 5`  renvoie \mintinline{cpp}`false` \\ \hline
+    \mintinline{cpp}`<=`  & Est inférieur ou égal à                     & \mintinline{cpp}`3 <= 5`  renvoie \mintinline{cpp}`true` \\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{cppcode}
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+        int a, b;
+        a = 3;
+        b = 5;
+        bool rslt;
+
+        rslt = (a == b);   // false
+        cout << "3 == 5 est " << rslt << endl;
+
+        rslt = (a != b);  // true
+        cout << "3 != 5 est " << rslt << endl;
+
+        rslt = a > b;   // false
+        cout << "3 > 5 est " << rslt << endl;
+
+        rslt = a < b;   // true
+        cout << "3 < 5 est " << rslt << endl;
+
+        rslt = a >= b;  // false
+        cout << "3 >= 5 est " << rslt << endl;
+
+        rslt = a <= b;  // true
+        cout << "3 <= 5 est " << rslt << endl;
+
+        return 0;
+}
+\end{cppcode}
+\caption{Exemple 3 : Opérateurs relationnels}
+
+\bigskip
+Sortie console :
+\begin{textcode}
+    3 == 5 est 0
+    3 != 5 est 1
+    3 > 5 est 0
+    3 < 5 est 1
+    3 >= 5 est 0
+    3 <= 5 est 1
+\end{textcode}
+
+\begin{noteblock}
+    Les opérateurs relationnels sont très souvent utilisés dans des conditions avec des structures alternatives et répétitives.
+\end{noteblock}
+
+
+\subsection{Opérateurs logiques}
+Un opérateur logique est utilisé pour tester si une expression est vraie ou fausse. Si une expression est vraie il retournera \mintinline{cpp}`1`,
+alors que si elle est fausse, il retournera \mintinline{cpp}`0`.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|l|}
+    \hline
+    \textbf{Opérateur} & \multicolumn{1}{c|}{\textbf{Exemple}} & \multicolumn{1}{c|}{\textbf{Description}}                                                       \\ \hline
+    \mintinline{cpp}`&&` & \mintinline{cpp}`expression1 && expression2` & \begin{tabular}[c]{@{}l@{}}ET logique\\ Vrai si les 2 expressions sont vraies\end{tabular}      \\ \hline
+    \mintinline{cpp}`||` & \mintinline{cpp}`expression1 || expression2` & \begin{tabular}[c]{@{}l@{}}OU logique\\ Vrai si au moins une expression est vraie\end{tabular}  \\ \hline
+    \mintinline{cpp}`!` & \mintinline{cpp}`!expression` & \begin{tabular}[c]{@{}l@{}}NON logique\\ Vrai seulement si l'expression est fausse\end{tabular} \\ \hline
+    \end{tabular}
+\end{table}
+
+Nous donnons ci-dessous un exemple d'utilisation de ces opérateurs :
+
+\begin{cppcode}
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+        bool rslt;
+
+        rslt = (3 != 5) && (3 < 5);     // true
+        cout << "(3 != 5) && (3 < 5) est " << rslt << endl;
+
+        rslt = (3 == 5) && (3 < 5);    // false
+        cout << "(3 == 5) && (3 < 5) est " << rslt << endl;
+
+        rslt = (3 == 5) && (3 > 5);    // false
+        cout << "(3 == 5) && (3 > 5) est " << rslt << endl;
+
+        rslt = (3 != 5) || (3 < 5);    // true
+        cout << "(3 != 5) || (3 < 5) est " << rslt << endl;
+
+        rslt = (3 != 5) || (3 > 5);    // true
+        cout << "(3 != 5) || (3 > 5) est " << rslt << endl;
+
+        rslt = (3 == 5) || (3 > 5);    // false
+        cout << "(3 == 5) || (3 > 5) est " << rslt << endl;
+
+        rslt = !(5 == 2);    // true
+        cout << "!(5 == 2) est " << rslt << endl;
+
+        rslt = !(5 == 5);    // false
+        cout << "!(5 == 5) est " << rslt << endl;
+
+        return 0;
+    }
+\end{cppcode}
+\caption{Exemple 4 : Opérateurs logiques}
+
+\bigskip
+Sortie console :
+\begin{textcode}
+    (3 != 5) && (3 < 5) est 1
+    (3 == 5) && (3 < 5) est 0
+    (3 == 5) && (3 > 5) est 0
+    (3 != 5) || (3 < 5) est 1
+    (3 != 5) || (3 > 5) est 1
+    (3 == 5) || (3 > 5) est 0
+    !(5 == 2) est 1
+    !(5 == 5) est 0
+\end{textcode}
+
+Explication du programme :
+
+\begin{itemize}
+    \item \mintinline{cpp}`(3 != 5) && (3 < 5)`  vaut 1 par ce que les deux expressions (3 != 5) est (3 < 5) sont 1 (true).
+    \item \mintinline{cpp}`(3 == 5) && (3 < 5)`  vaut 0 par ce que l'expression (3 == 5) est 0 (false).
+    \item \mintinline{cpp}`(3 == 5) && (3 > 5)`  vaut 0 par ce que les deux expressions (3 == 5) est (3 > 5) sont 0 (false).
+    \item \mintinline{cpp}`(3 != 5) || (3 < 5)`  vaut 1 par ce que les deux expressions (3 != 5) est (3 < 5) sont 1 (true).
+    \item \mintinline{cpp}`(3 != 5) || (3 > 5)`  vaut 1 par ce que l'expression (3 != 5) est 1 (true).
+    \item \mintinline{cpp}`(3 == 5) || (3 > 5)`  vaut 0 par ce que les deux expressions (3 == 5) est (3 > 5) sont 0 (false).
+    \item \mintinline{cpp}`!(5 == 2)`  vaut 1 par ce que l'expression (5 == 2) est 0 (false).
+    \item \mintinline{cpp}`!(5 == 5)`  vaut 0 par ce que l'expression (5 == 5) est 1 (true).
+\end{itemize}
+
+
+
+%----------------------------------------------------
+% Section 6
+%----------------------------------------------------
+\section{Les commentaires}
+
+C++ permet l'ajout de commentaires dans le code, ce sont des informations textuelles utiles pour le programmeur mais ignorées par le
+compilateur. \textbf{Les commentaires n'ont aucune influence sur le code !}
+
+\smallskip
+Si vous écrivez des commentaires dans votre code, il sera bien plus facile dans le futur de vous souvenir de ce que vous avez voulu faire.
+C'est aussi un moyen qu'ont les autres développeurs qui utilisent votre code pour comprendre comment il fonctionne.
+
+\subsection{Commentaires d'une ligne}
+C'est le mot clé \mintinline{cpp}`//` qu'il faut utiliser en préfixe pour commenter la ligne, nous donnons un exemple ci dessous :
+
+\begin{cppcode}
+    // Déclaration de la variable a
+    int a;
+
+    a = 2; // Affectation de 2 à la variable a
+\end{cppcode}
+\caption{Exemple 1 : Commentaires d'une ligne}
+
+\subsection{Commentaires multi-lignes}
+Pour commenter plusieurs lignes, c'est le couple \mintinline{cpp}`/* ... */` qui doit être utilisé :
+
+\begin{cppcode}
+    /* Declaration d'une variable
+    pour stocker le salaire des employés
+    */
+    int salaire = 2000;
+\end{cppcode}
+\caption{Exemple 2 : Commentaires multi-lignes}
+
+
+
+
+
+
+\end{document}  
